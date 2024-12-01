@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../utils/image_helper.dart';
+import '../widgets/common_bottom_navigation.dart';
 
 class PostDetailScreen extends StatelessWidget {
   final int postIndex;
@@ -39,8 +40,14 @@ class PostDetailScreen extends StatelessWidget {
     return likes[index];
   }
 
+  bool _getRandomBookmarkState() {
+    return DateTime.now().millisecondsSinceEpoch % 2 == 0;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final bool isBookmarked = _getRandomBookmarkState();
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -59,82 +66,119 @@ class PostDetailScreen extends StatelessWidget {
           SizedBox(width: 15),
         ],
       ),
-      body: Column(
-        children: [
-          Image.asset(
-            ImageHelper.getImagePath('assets/images/posts', postIndex),
-            width: double.infinity,
-            height: 400,
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) {
-              // png 로드 실패시 jpg 시도
-              return Image.asset(
-                'assets/images/posts/post${postIndex + 1}.jpg',
-                width: double.infinity,
-                height: 400,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return const Icon(Icons.error); // 모두 실패시 에러 아이콘
-                },
-              );
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.favorite_border,
-                          color: Colors.red,
-                        ),
-                        SizedBox(width: 12),
-                        Icon(Icons.chat_bubble_outline),
-                        SizedBox(width: 12),
-                        Icon(Icons.send),
-                      ],
-                    ),
-                    const Icon(Icons.bookmark_border),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '${_getLikesCount(postIndex)} likes',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                RichText(
-                  text: TextSpan(
-                    style: const TextStyle(color: Colors.black),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            Image.asset(
+              ImageHelper.getImagePath('assets/images/posts', postIndex),
+              width: double.infinity,
+              height: 400,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                // png 로드 실패시 jpg 시도
+                return Image.asset(
+                  'assets/images/posts/post${postIndex + 1}.jpg',
+                  width: double.infinity,
+                  height: 400,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Icon(Icons.error); // 모두 실패시 에러 아이콘
+                  },
+                );
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      const TextSpan(
-                        text: 'Cookie Monster ',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                      Container(
+                        width: 40,
+                        height: 40,
+                        margin: const EdgeInsets.only(right: 10),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.grey[300]!,
+                            width: 1,
+                          ),
+                        ),
+                        child: ClipOval(
+                          child: Image.asset(
+                            ImageHelper.getImagePath(
+                                'assets/images/profile/profile', null),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
-                      TextSpan(
-                        text: _getPostCaption(postIndex),
+                      const Text(
+                        'Cookie Monster',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '6 minutes ago',
-                  style: TextStyle(
-                    color: Colors.grey[400],
-                    fontSize: 12,
+                  const SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                          ),
+                          SizedBox(width: 12),
+                          Icon(Icons.chat_bubble_outline),
+                          SizedBox(width: 12),
+                          Icon(Icons.send),
+                        ],
+                      ),
+                      Icon(
+                        isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  const SizedBox(height: 8),
+                  Text(
+                    '${_getLikesCount(postIndex)} likes',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  RichText(
+                    text: TextSpan(
+                      style: const TextStyle(color: Colors.black),
+                      children: [
+                        const TextSpan(
+                          text: 'Cookie Monster ',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text: _getPostCaption(postIndex),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '6 minutes ago',
+                    style: TextStyle(
+                      color: Colors.grey[400],
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
+      bottomNavigationBar: const CommonBottomNavigation(),
     );
   }
 }

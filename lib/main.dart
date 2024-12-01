@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'screens/post_detail_screen.dart';
 import 'utils/image_helper.dart';
+import 'widgets/common_bottom_navigation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -62,20 +63,41 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                   child: ClipOval(
-                    child: Image.asset(
-                      ImageHelper.getImagePath(
-                          'assets/images/profile/profile', null),
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        // png 로드 실패시 jpg 시도
-                        return Image.asset(
-                          'assets/images/profile/profile.jpg',
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return const Icon(Icons.error); // 모두 실패시 에러 아이콘
-                          },
+                    child: GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => Dialog(
+                            child: Container(
+                              width: 300,
+                              height: 300,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                    ImageHelper.getImagePath(
+                                        'assets/images/profile/profile', null),
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ),
                         );
                       },
+                      child: Image.asset(
+                        ImageHelper.getImagePath(
+                            'assets/images/profile/profile', null),
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            'assets/images/profile/profile.jpg',
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(Icons.error);
+                            },
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -198,19 +220,7 @@ class ProfilePage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.add_box_outlined), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite_border), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
-        ],
-      ),
+      bottomNavigationBar: const CommonBottomNavigation(),
     );
   }
 
