@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'screens/post_detail_screen.dart';
 import 'utils/image_helper.dart';
 import 'widgets/common_bottom_navigation.dart';
+import 'widgets/profile_image_dialog.dart';
 
 void main() {
   runApp(const MyApp());
@@ -80,26 +81,8 @@ class ProfilePage extends StatelessWidget {
                           onTap: () {
                             showDialog(
                               context: context,
-                              builder: (context) => Dialog(
-                                child: Container(
-                                  width: 300,
-                                  height: 300,
-                                  child: Image.asset(
-                                    '${ImageHelper.getImagePath('assets/images/profile/profile', null)}.png',
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Image.asset(
-                                        '${ImageHelper.getImagePath('assets/images/profile/profile', null)}.jpg',
-                                        fit: BoxFit.cover,
-                                        errorBuilder:
-                                            (context, error, stackTrace) {
-                                          return const Icon(Icons.error);
-                                        },
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
+                              builder: (context) => const ProfileImageDialog(),
+                              barrierColor: Colors.black87,
                             );
                           },
                           child: Image.asset(
