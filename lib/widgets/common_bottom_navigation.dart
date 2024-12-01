@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'animated_heart.dart';
 
 class CommonBottomNavigation extends StatelessWidget {
   final VoidCallback? onLikePressed;
+  final bool isLiked;
 
   const CommonBottomNavigation({
     super.key,
     this.onLikePressed,
+    this.isLiked = false,
   });
 
   @override
@@ -19,24 +22,29 @@ class CommonBottomNavigation extends StatelessWidget {
           onLikePressed!();
         }
       },
-      items: const [
-        BottomNavigationBarItem(
+      items: [
+        const BottomNavigationBarItem(
           icon: Icon(Icons.home, size: 30),
           label: '',
         ),
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
           icon: Icon(Icons.search, size: 30),
           label: '',
         ),
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
           icon: Icon(Icons.add_box_outlined, size: 30),
           label: '',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.favorite_border, size: 30),
+          icon: onLikePressed != null
+              ? AnimatedHeart(
+                  onTap: onLikePressed!,
+                  isLiked: isLiked,
+                )
+              : const Icon(Icons.favorite_border, size: 30),
           label: '',
         ),
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
           icon: Icon(Icons.person, size: 30),
           label: '',
         ),

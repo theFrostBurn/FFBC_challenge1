@@ -33,6 +33,7 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
+        centerTitle: true,
         title: const Text(
           'Cookie Monster',
           style: TextStyle(
@@ -53,53 +54,68 @@ class ProfilePage extends StatelessWidget {
             child: Row(
               children: [
                 Container(
-                  width: 80,
-                  height: 80,
+                  width: 120,
+                  height: 120,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Colors.grey[300]!,
-                      width: 1,
+                    gradient: const LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [
+                        Color(0xFF9C27B0),
+                        Color(0xFFE040FB),
+                        Color(0xFFFFD700),
+                      ],
                     ),
                   ),
-                  child: ClipOval(
-                    child: GestureDetector(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => Dialog(
-                            child: Container(
-                              width: 300,
-                              height: 300,
-                              child: Image.asset(
-                                '${ImageHelper.getImagePath('assets/images/profile/profile', null)}.png',
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Image.asset(
-                                    '${ImageHelper.getImagePath('assets/images/profile/profile', null)}.jpg',
+                  child: Padding(
+                    padding: const EdgeInsets.all(3.5),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                      child: ClipOval(
+                        child: GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => Dialog(
+                                child: Container(
+                                  width: 300,
+                                  height: 300,
+                                  child: Image.asset(
+                                    '${ImageHelper.getImagePath('assets/images/profile/profile', null)}.png',
                                     fit: BoxFit.cover,
                                     errorBuilder: (context, error, stackTrace) {
-                                      return const Icon(Icons.error);
+                                      return Image.asset(
+                                        '${ImageHelper.getImagePath('assets/images/profile/profile', null)}.jpg',
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return const Icon(Icons.error);
+                                        },
+                                      );
                                     },
-                                  );
-                                },
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        );
-                      },
-                      child: Image.asset(
-                        '${ImageHelper.getImagePath('assets/images/profile/profile', null)}.png',
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Image.asset(
-                            '${ImageHelper.getImagePath('assets/images/profile/profile', null)}.jpg',
+                            );
+                          },
+                          child: Image.asset(
+                            '${ImageHelper.getImagePath('assets/images/profile/profile', null)}.png',
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
-                              return const Icon(Icons.error);
+                              return Image.asset(
+                                '${ImageHelper.getImagePath('assets/images/profile/profile', null)}.jpg',
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Icon(Icons.error);
+                                },
+                              );
                             },
-                          );
-                        },
+                          ),
+                        ),
                       ),
                     ),
                   ),

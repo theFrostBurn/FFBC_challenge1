@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../utils/image_helper.dart';
 import '../widgets/common_bottom_navigation.dart';
+import '../widgets/animated_heart.dart';
+import '../widgets/animated_bookmark.dart';
 
 class PostDetailScreen extends StatefulWidget {
   final int postIndex;
@@ -61,28 +63,42 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             Padding(
               padding: const EdgeInsets.only(right: 12),
               child: Container(
-                width: 50,
-                height: 50,
+                width: 52,
+                height: 52,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.grey[300]!,
-                    width: 1,
+                  gradient: const LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: [
+                      Color(0xFF9C27B0),
+                      Color(0xFFE040FB),
+                      Color(0xFFFFD700),
+                    ],
                   ),
                 ),
-                child: ClipOval(
-                  child: Image.asset(
-                    '${ImageHelper.getImagePath('assets/images/profile/profile', null)}.png',
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        '${ImageHelper.getImagePath('assets/images/profile/profile', null)}.jpg',
+                child: Padding(
+                  padding: const EdgeInsets.all(2),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                    ),
+                    child: ClipOval(
+                      child: Image.asset(
+                        '${ImageHelper.getImagePath('assets/images/profile/profile', null)}.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
-                          return const Icon(Icons.error);
+                          return Image.asset(
+                            '${ImageHelper.getImagePath('assets/images/profile/profile', null)}.jpg',
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(Icons.error);
+                            },
+                          );
                         },
-                      );
-                    },
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -141,13 +157,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     children: [
                       Row(
                         children: [
-                          GestureDetector(
+                          AnimatedHeart(
                             onTap: toggleLike,
-                            child: Icon(
-                              isLiked ? Icons.favorite : Icons.favorite_border,
-                              color: isLiked ? Colors.red : Colors.black,
-                              size: 30,
-                            ),
+                            isLiked: isLiked,
                           ),
                           const SizedBox(width: 16),
                           const Icon(
@@ -161,12 +173,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                           ),
                         ],
                       ),
-                      GestureDetector(
+                      AnimatedBookmark(
                         onTap: toggleBookmark,
-                        child: Icon(
-                          isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-                          size: 30,
-                        ),
+                        isBookmarked: isBookmarked,
                       ),
                     ],
                   ),
@@ -206,6 +215,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
       ),
       bottomNavigationBar: CommonBottomNavigation(
         onLikePressed: toggleLike,
+        isLiked: isLiked,
       ),
     );
   }
