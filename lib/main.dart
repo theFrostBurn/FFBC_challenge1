@@ -71,26 +71,29 @@ class ProfilePage extends StatelessWidget {
                             child: Container(
                               width: 300,
                               height: 300,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                    ImageHelper.getImagePath(
-                                        'assets/images/profile/profile', null),
-                                  ),
-                                  fit: BoxFit.cover,
-                                ),
+                              child: Image.asset(
+                                '${ImageHelper.getImagePath('assets/images/profile/profile', null)}.png',
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.asset(
+                                    '${ImageHelper.getImagePath('assets/images/profile/profile', null)}.jpg',
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return const Icon(Icons.error);
+                                    },
+                                  );
+                                },
                               ),
                             ),
                           ),
                         );
                       },
                       child: Image.asset(
-                        ImageHelper.getImagePath(
-                            'assets/images/profile/profile', null),
+                        '${ImageHelper.getImagePath('assets/images/profile/profile', null)}.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Image.asset(
-                            'assets/images/profile/profile.jpg',
+                            '${ImageHelper.getImagePath('assets/images/profile/profile', null)}.jpg',
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
                               return const Icon(Icons.error);
@@ -204,12 +207,15 @@ class ProfilePage extends StatelessWidget {
                   },
                   child: Container(
                     child: Image.asset(
-                      ImageHelper.getImagePath('assets/images/posts', index),
+                      '${ImageHelper.getImagePath('assets/images/posts', index)}.jpg',
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Image.asset(
-                          'assets/images/posts/post${index + 1}.jpg',
+                          '${ImageHelper.getImagePath('assets/images/posts', index)}.png',
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(Icons.error);
+                          },
                         );
                       },
                     ),
@@ -220,7 +226,7 @@ class ProfilePage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: const CommonBottomNavigation(),
+      bottomNavigationBar: const CommonBottomNavigation(onLikePressed: null),
     );
   }
 
