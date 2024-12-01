@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'screens/post_detail_screen.dart';
+import 'utils/image_helper.dart';
 
 void main() {
   runApp(const MyApp());
@@ -61,8 +63,19 @@ class ProfilePage extends StatelessWidget {
                   ),
                   child: ClipOval(
                     child: Image.asset(
-                      'assets/images/profile/profile.png',
+                      ImageHelper.getImagePath(
+                          'assets/images/profile/profile', null),
                       fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        // png 로드 실패시 jpg 시도
+                        return Image.asset(
+                          'assets/images/profile/profile.jpg',
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(Icons.error); // 모두 실패시 에러 아이콘
+                          },
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -156,15 +169,27 @@ class ProfilePage extends StatelessWidget {
               ),
               itemCount: 9,
               itemBuilder: (context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        Colors.blue[400]!,
-                        Colors.purple[400]!,
-                      ],
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PostDetailScreen(
+                          postIndex: index,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    child: Image.asset(
+                      ImageHelper.getImagePath('assets/images/posts', index),
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'assets/images/posts/post${index + 1}.jpg',
+                          fit: BoxFit.cover,
+                        );
+                      },
                     ),
                   ),
                 );

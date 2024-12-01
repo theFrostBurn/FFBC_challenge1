@@ -90,4 +90,5 @@ flutter:
   # see https://flutter.dev/to/font-from-package
 
   assets:
-    - assets/images/profile/profile.png
+    - assets/images/profile/
+    - assets/images/posts/
